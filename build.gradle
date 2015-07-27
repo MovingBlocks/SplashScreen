@@ -1,0 +1,83 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'findbugs'
+
+group = 'org.terasology'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// We use both Maven Central and our own Artifactory instance, which contains module builds, extra libs, and so on
+repositories {
+    mavenCentral()
+    maven {
+        url "http://artifactory.terasology.org/artifactory/virtual-repo-live"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.5'
+}
+
+configurations {
+    codeMetrics
+}
+
+dependencies {
+
+    codeMetrics(group: 'org.terasology.config', name: 'codemetrics', version: '1.0.0', ext: 'zip')
+    
+     compile group: 'com.google.guava', name: 'guava', version: '18.0'
+}
+
+task sourceJar(type: Jar) {
+    description = "Create a JAR with all sources"
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    description = "Create a JAR with the JavaDoc for the java sources"
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
+// Define the artifacts we want to publish (the .pom will also be included since the Maven plugin is active)
+artifacts {
+    archives sourceJar
+    archives javadocJar
+}
+
+checkstyle {
+    ignoreFailures = true
+    config = resources.text.fromArchiveEntry(configurations.codeMetrics, "checkstyle/checkstyle.xml")
+    // this assigns the property variable ${samedir} in checkstyle.xml
+    configProperties.samedir = config.asFile().parent
+}
+
+configure([checkstyleMain, checkstyleTest]) { 
+    doFirst {
+        def suppressions = resources.text.fromArchiveEntry(configurations.codeMetrics, "checkstyle/suppressions.xml")
+        // the asFile() method extracts the file from the zip archive and puts it next to checkstyle.xml
+        // this procedure should not be done in the config phase, since the clean task would erase the file before it can be used
+        suppressions.asFile()
+    }
+}
+
+pmd {
+    ignoreFailures = true
+    ruleSetConfig = resources.text.fromArchiveEntry(configurations.codeMetrics, "pmd/pmd.xml")
+    ruleSets = []
+}
+
+findbugs {
+    ignoreFailures = true
+    effort = 'max'
+    reportLevel = 'medium'
+    toolVersion = '3.0.1'
+    excludeFilterConfig = resources.text.fromArchiveEntry(configurations.codeMetrics, "findbugs/findbugs-exclude.xml")
+}
