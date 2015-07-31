@@ -32,21 +32,21 @@ public class TriggerImageOverlay implements Overlay {
     private int x;
     private int y;
     private boolean visible = true;
-    private String trigger = null;
+    private String trigger;
 
     public TriggerImageOverlay(URL imgResource) throws IOException {
         img = ImageIO.read(imgResource);
     }
 
-    public TriggerImageOverlay setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public TriggerImageOverlay setPosition(int nx, int ny) {
+        this.x = nx;
+        this.y = ny;
         return this;
     }
 
-    public TriggerImageOverlay setTrigger(String trigger) {
-        this.visible = (trigger == null);
-        this.trigger = trigger;
+    public TriggerImageOverlay setTrigger(String newTrigger) {
+        this.visible = (newTrigger == null);
+        this.trigger = newTrigger;
         return this;
     }
 

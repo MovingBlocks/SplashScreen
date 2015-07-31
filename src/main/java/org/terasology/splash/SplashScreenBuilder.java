@@ -21,8 +21,8 @@ import java.net.URL;
 
 import org.terasology.splash.overlay.Overlay;
 
-public final class SplashScreenBuilder
-{
+public final class SplashScreenBuilder {
+
     private AbstractSplashScreen splashScreen;
 
     public SplashScreenBuilder(URL splashImageUrl) throws IOException {
@@ -39,8 +39,7 @@ public final class SplashScreenBuilder
             if (AwtSplashScreen.getDefaultSplashImageUrl() != null) {
                 try {
                     splashScreen = new AwtSplashScreen();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     // TODO: maybe re-throw?
                     // TODO: maybe forward to slf4j or jul ?
                 }

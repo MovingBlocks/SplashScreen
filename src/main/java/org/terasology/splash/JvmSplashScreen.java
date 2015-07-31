@@ -17,7 +17,6 @@
 package org.terasology.splash;
 
 import java.awt.Graphics2D;
-import java.awt.HeadlessException;
 
 import javax.swing.SwingUtilities;
 

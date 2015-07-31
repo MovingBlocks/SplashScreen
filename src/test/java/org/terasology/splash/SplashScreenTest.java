@@ -21,15 +21,13 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.URL;
 
-import org.terasology.splash.SplashScreen;
-import org.terasology.splash.SplashScreenBuilder;
 import org.terasology.splash.overlay.AnimatedBoxRowOverlay;
 import org.terasology.splash.overlay.BreathingImageOverlay;
 import org.terasology.splash.overlay.TriggerImageOverlay;
 import org.terasology.splash.overlay.RectOverlay;
 import org.terasology.splash.overlay.TextOverlay;
 
-public class SplashScreenTest {
+public final class SplashScreenTest {
 
     /**
      * Run with JVM argument: -splash:src/test/resources/splash.jpg
@@ -37,8 +35,7 @@ public class SplashScreenTest {
      * @throws InterruptedException
      * @throws IOException
      */
-    public static void main(String[] args) throws InterruptedException, IOException
-    {
+    public static void main(String[] args) throws InterruptedException, IOException {
 //        System.setProperty("java.awt.headless", "true");
 
         int imageHeight = 283;
@@ -46,7 +43,7 @@ public class SplashScreenTest {
         int width = 600;
         int height = 30;
         int left = 20;
-        int top = imageHeight-height - 20;
+        int top = imageHeight - height - 20;
 
         Rectangle rectRc = new Rectangle(left, top, width, height);
         Rectangle textRc = new Rectangle(left + 10, top + 5, maxTextWidth, height);

@@ -41,14 +41,14 @@ public class BreathingImageOverlay implements Overlay {
         centerY = img.getHeight() * 0.5;
     }
 
-    public BreathingImageOverlay setCenter(double x, double y) {
-        this.centerX = x;
-        this.centerY = y;
+    public BreathingImageOverlay setCenter(double nx, double ny) {
+        this.centerX = nx;
+        this.centerY = ny;
         return this;
     }
 
-    public BreathingImageOverlay setAnimationSpeed(double speed) {
-        this.speed = speed;
+    public BreathingImageOverlay setAnimationSpeed(double newSpeed) {
+        this.speed = newSpeed;
         return this;
     }
 
