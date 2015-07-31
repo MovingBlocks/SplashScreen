@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-package org.terasology.splash;
+package org.terasology.splash.overlay;
 
-public class SplashScreens
-{
-    public static SplashScreen INSTANCE =
-            (!java.awt.GraphicsEnvironment.isHeadless() && java.awt.SplashScreen.getSplashScreen() != null)
-            ? new DefaultSplashScreen()
-            : new SplashScreenStub();
+import java.awt.Graphics2D;
 
+public interface Overlay {
+
+    /**
+     * @param dt in millisecs
+     */
+    default void update(double dt) {
+        // do nothing by default
+    }
+
+    /**
+     * @param message the current message text
+     */
+    default void setMessage(String message) {
+        // ignore
+    }
+
+    void render(Graphics2D g);
 }

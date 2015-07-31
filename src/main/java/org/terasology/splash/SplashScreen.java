@@ -18,6 +18,10 @@ package org.terasology.splash;
 
 public interface SplashScreen {
 
+    /**
+     * Adds a new message in the display queue. <code>null</code> values are silently ignored.
+     * @param message the message to be queued
+     */
     void post(String message);
 
     void close();

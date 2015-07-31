@@ -19,7 +19,7 @@ package org.terasology.splash;
 /**
  * A dummy implementation that does nothing
  */
-public class SplashScreenStub implements SplashScreen {
+class SplashScreenStub implements SplashScreen {
 
     @Override
     public void post(String message) {

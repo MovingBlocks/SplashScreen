@@ -30,8 +30,6 @@ configurations {
 dependencies {
 
     codeMetrics(group: 'org.terasology.config', name: 'codemetrics', version: '1.0.0', ext: 'zip')
-    
-     compile group: 'com.google.guava', name: 'guava', version: '18.0'
 }
 
 task sourceJar(type: Jar) {
