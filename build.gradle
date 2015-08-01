@@ -1,3 +1,7 @@
+plugins {
+    id "com.jfrog.artifactory" version "3.1.1"
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
@@ -32,7 +36,7 @@ dependencies {
 
     codeMetrics(group: 'org.terasology.config', name: 'codemetrics', version: '1.0.0', ext: 'zip')
 
-//    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.12'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.12'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
@@ -90,7 +94,7 @@ findbugs {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-
+            
             from components.java
 
             artifact sourceJar {
@@ -103,17 +107,11 @@ publishing {
     }
 }
 
-publishing {
-    repositories {
-        maven {
-            if (project.hasProperty('artifactoryUser') && project.hasProperty('artifactoryPass')) {
-                credentials {
-                    username artifactoryUser
-                    password artifactoryPass
-                }
-            }
-            String repo = (version.endsWith('-SNAPSHOT')) ? 'libs-snapshot-local' : 'libs-release-local'
-            url "http://artifactory.terasology.org/artifactory/" + repo
+artifactory {
+    publish {
+        defaults {
+            publications('mavenJava')
         }
     }
 }
+
