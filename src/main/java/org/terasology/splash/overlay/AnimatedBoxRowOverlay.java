@@ -35,7 +35,7 @@ public class AnimatedBoxRowOverlay implements Overlay {
     /**
      * In seconds
      */
-    double delayPerBox = 0.1;
+    private double delayPerBox = 0.1;
 
     public AnimatedBoxRowOverlay(Rectangle boxRc) {
         this.boxRc = boxRc;

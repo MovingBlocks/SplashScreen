@@ -16,8 +16,12 @@
 
 package org.terasology.splash;
 
+import java.awt.EventQueue;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+
+import javax.swing.SwingUtilities;
 
 import org.terasology.splash.overlay.Overlay;
 
@@ -25,38 +29,81 @@ public final class SplashScreenBuilder {
 
     private AbstractSplashScreen splashScreen;
 
-    public SplashScreenBuilder(URL splashImageUrl) throws IOException {
-        splashScreen = new AwtSplashScreen(splashImageUrl);
-    }
+    private final URL resourceUrl;
+    private final int windowWidth;
+    private final int windowHeight;
 
-    public SplashScreenBuilder() {
-        if (!java.awt.GraphicsEnvironment.isHeadless()) {
-
+    private Runnable createInstanceTask = new Runnable() {
+        @Override
+        public void run() {
             if (JvmSplashScreen.isAvailable()) {
                 splashScreen = new JvmSplashScreen();
+                return;
             }
 
-            if (AwtSplashScreen.getDefaultSplashImageUrl() != null) {
+            if (resourceUrl != null) {
                 try {
-                    splashScreen = new AwtSplashScreen();
+                    splashScreen = new SwingSplashScreen(resourceUrl);
                 } catch (IOException e) {
-                    // TODO: maybe re-throw?
-                    // TODO: maybe forward to slf4j or jul ?
+                    e.printStackTrace();
                 }
+            } else if (windowWidth > 0 && windowHeight > 0) {
+                splashScreen = new SwingSplashScreen(windowWidth, windowHeight);
+            }
+        }
+    };
+
+    public SplashScreenBuilder() {
+        this(SwingSplashScreen.getDefaultSplashImageUrl(), 0, 0);
+    }
+
+    public SplashScreenBuilder(int width, int height) {
+        this(null, width, height);
+    }
+
+    public SplashScreenBuilder(URL imageUrl) {
+        this(imageUrl, 0, 0);
+    }
+
+    private SplashScreenBuilder(URL imageUrl, int width, int height) {
+        this.resourceUrl = imageUrl;
+        this.windowWidth = width;
+        this.windowHeight = height;
+
+        if (!java.awt.GraphicsEnvironment.isHeadless()) {
+
+            if (!EventQueue.isDispatchThread()) {
+                try {
+                    SwingUtilities.invokeAndWait(createInstanceTask);
+                }
+                catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+                catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                createInstanceTask.run();
             }
         }
     }
 
+    /**
+     * Adds an overlay. <code>null</code> values are silently ignored.
+     * @param overlay the overlay to add
+     * @return this
+     */
     public SplashScreenBuilder add(Overlay overlay) {
-        if (splashScreen != null) {
-            splashScreen.addOverlay(overlay);
+        if (overlay != null) {
+            if (splashScreen != null) {
+                splashScreen.addOverlay(overlay);
+            }
         }
         return this;
     }
 
     public SplashScreen build() {
         if (splashScreen != null) {
-            splashScreen.startTimer();  // TODO: this is just awful
             return splashScreen;
         }
 

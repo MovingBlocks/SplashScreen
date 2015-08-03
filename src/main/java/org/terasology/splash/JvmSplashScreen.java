@@ -32,10 +32,10 @@ final class JvmSplashScreen extends AbstractSplashScreen {
 
     /**
      * @throws UnsupportedOperationException - if the splash screen feature is not supported by the current toolkit
-     * @throws HeadlessException - if GraphicsEnvironment.isHeadless() returns true
+     * @throws java.awt.HeadlessException - if GraphicsEnvironment.isHeadless() returns true
      * @throws IllegalStateException - if the splash screen is not available or already closed
      */
-    public JvmSplashScreen() {
+    JvmSplashScreen() {
         splashScreen = java.awt.SplashScreen.getSplashScreen();
         if (splashScreen == null) {
             throw new IllegalStateException("splash screen is not available or already closed");

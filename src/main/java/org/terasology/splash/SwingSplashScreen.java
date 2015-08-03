@@ -27,12 +27,12 @@ import java.net.URL;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
-import javax.swing.RepaintManager;
+import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 import org.terasology.splash.overlay.Overlay;
 
-final class AwtSplashScreen extends AbstractSplashScreen {
+final class SwingSplashScreen extends AbstractSplashScreen {
 
     private final Window window;
 
@@ -40,15 +40,26 @@ final class AwtSplashScreen extends AbstractSplashScreen {
      * Uses the default image URL
      * @throws IOException if the image is not found or cannot be loaded
      */
-    public AwtSplashScreen() throws IOException {
+    SwingSplashScreen() throws IOException {
         this(getDefaultSplashImageUrl());
     }
 
-    public AwtSplashScreen(URL splashImageUrl) throws IOException {
-        BufferedImage image = ImageIO.read(splashImageUrl);
-        window = new Window(null);
+    SwingSplashScreen(URL splashImageUrl) throws IOException {
+        this(ImageIO.read(splashImageUrl));
+    }
+
+    SwingSplashScreen(int width, int height) {
+        this(null, width, height);
+    }
+
+    SwingSplashScreen(BufferedImage image) {
+        this(image, image.getWidth(), image.getHeight());
+    }
+
+    SwingSplashScreen(BufferedImage image, int width, int height) {
+        window = new JWindow((Window) null);
         window.setBackground(new Color(0, 0, 0, 0));
-        window.setSize(image.getWidth(), image.getHeight());
+        window.setSize(width, height);
         window.setLocationRelativeTo(null);
         window.setAlwaysOnTop(true);
         window.add(new Component() {
@@ -57,7 +68,9 @@ final class AwtSplashScreen extends AbstractSplashScreen {
 
             @Override
             public void paint(Graphics g) {
-                g.drawImage(image, 0, 0, null);
+                if (image != null) {
+                    g.drawImage(image, 0, 0, width, height, null);
+                }
                 for (Overlay overlay : getOverlays()) {
                     overlay.render((Graphics2D) g);
                 }
@@ -75,7 +88,7 @@ final class AwtSplashScreen extends AbstractSplashScreen {
         String[] readerFileSuffixes = ImageIO.getReaderFileSuffixes();
         Arrays.sort(readerFileSuffixes);
         for (String fileExt : readerFileSuffixes) {
-            URL resource = AwtSplashScreen.class.getResource("/splash/splash." + fileExt);
+            URL resource = SwingSplashScreen.class.getResource("/splash/splash." + fileExt);
             if (resource != null) {
                 return resource;
             }
@@ -89,9 +102,6 @@ final class AwtSplashScreen extends AbstractSplashScreen {
             return false;
         }
 
-        // TODO: figure this out - without marking non-window as dirty it won't be repainted
-        // setting an opaque background color resolves this, but causes the background to be painted
-        RepaintManager.currentManager(window).addDirtyRegion(window, 0, 0, window.getWidth(), window.getHeight());
         window.repaint();
 
         return true;

@@ -16,6 +16,7 @@
 
 package org.terasology.splash;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.Timer;
 
@@ -50,9 +52,13 @@ abstract class AbstractSplashScreen implements SplashScreen {
 
     private final Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
 
-    private final List<Overlay> overlays = new ArrayList<>();
+    private final List<Overlay> overlays = new CopyOnWriteArrayList<>();
 
-    public AbstractSplashScreen() {
+    AbstractSplashScreen() {
+        if (!EventQueue.isDispatchThread()) {
+            throw new IllegalStateException("must be called on AWT's event dispatch thread");
+        }
+
         ActionListener timerAction = new ActionListener() {
 
             private long nanoTime;
@@ -75,11 +81,12 @@ abstract class AbstractSplashScreen implements SplashScreen {
 
         timer = new Timer(timerFreq, timerAction);
         timer.setInitialDelay(0);
-    }
 
-    final void startTimer() {
-        // The timer cannot be started in the constructor since the constructor of the derived classes
-        // is called afterwards. Thus the timer could trigger before the constructor has run.
+        // We can start the time now, because the timer adds an event to the EDT queue and will not run
+        // until this method call returns control. The first timer update has a delta time value of 0.
+
+        // If not run on EDT, the timer cannot be started in the constructor since the constructor of
+        // the derived classes is called afterwards. Thus the timer could trigger before the constructor has run.
         timer.start();
     }
 

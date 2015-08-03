@@ -22,6 +22,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 
 /**
  * An overlay that renders (shadowed) text within a given rectangle.
@@ -65,6 +66,7 @@ public class TextOverlay implements Overlay {
 
         if (text != null) {
             g.setFont(font);
+//            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             FontMetrics fm = g.getFontMetrics();
 
             String printedText = truncateToWidth(fm, text, ellipsis, rc.width);

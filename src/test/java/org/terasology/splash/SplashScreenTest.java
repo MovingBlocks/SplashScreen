@@ -21,6 +21,8 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.URL;
 
+import javax.swing.SwingUtilities;
+
 import org.terasology.splash.overlay.AnimatedBoxRowOverlay;
 import org.terasology.splash.overlay.BreathingImageOverlay;
 import org.terasology.splash.overlay.TriggerImageOverlay;

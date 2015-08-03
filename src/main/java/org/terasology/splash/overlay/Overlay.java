@@ -21,7 +21,7 @@ import java.awt.Graphics2D;
 public interface Overlay {
 
     /**
-     * @param dt in millisecs
+     * @param dt delta time since the last update call in millisecs
      */
     default void update(double dt) {
         // do nothing by default
