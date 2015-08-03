@@ -40,7 +40,7 @@ abstract class AbstractSplashScreen implements SplashScreen {
     /**
      * In milli-seconds
      */
-    private final int timerFreq = 10;
+    private final int timerFreq = 40;
 
     /**
      * Minimum time a message is visible (in milli-seconds)

@@ -39,7 +39,17 @@ public class HeadlessTest {
     }
 
     @Test
-    public void testHeadless() {
+    public void testInvalidUrl() {
+        new SplashScreenBuilder(this.getClass().getResource("/not-there.png")).build().close();
+    }
+
+    @Test
+    public void testBrokenImage() {
+        new SplashScreenBuilder(this.getClass().getResource("/splash/broken-image.png")).build().close();
+    }
+
+    @Test
+    public void testDefault() {
         SplashScreen splash = new SplashScreenBuilder()
             .add(new TextOverlay(new Rectangle(0, 0, 200, 50)))
             .build();

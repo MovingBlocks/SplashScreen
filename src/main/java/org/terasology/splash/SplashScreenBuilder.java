@@ -45,7 +45,7 @@ public final class SplashScreenBuilder {
                 try {
                     splashScreen = new SwingSplashScreen(resourceUrl);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    // eat silently - consider re-throwing or storing in a member field to throw later
                 }
             } else if (windowWidth > 0 && windowHeight > 0) {
                 splashScreen = new SwingSplashScreen(windowWidth, windowHeight);

@@ -45,7 +45,7 @@ final class SwingSplashScreen extends AbstractSplashScreen {
     }
 
     SwingSplashScreen(URL splashImageUrl) throws IOException {
-        this(ImageIO.read(splashImageUrl));
+        this(readImage(splashImageUrl));
     }
 
     SwingSplashScreen(int width, int height) {
@@ -113,4 +113,11 @@ final class SwingSplashScreen extends AbstractSplashScreen {
         SwingUtilities.invokeLater(() -> window.dispose());
     }
 
+    private static BufferedImage readImage(URL splashImageUrl) throws IOException {
+        BufferedImage img = ImageIO.read(splashImageUrl);
+        if (img == null) {
+            throw new IOException("Unable to load image " + splashImageUrl);
+        }
+        return img;
+    }
 }

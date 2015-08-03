@@ -21,23 +21,17 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.swing.SwingUtilities;
-
+import org.junit.Test;
 import org.terasology.splash.overlay.AnimatedBoxRowOverlay;
 import org.terasology.splash.overlay.BreathingImageOverlay;
-import org.terasology.splash.overlay.TriggerImageOverlay;
 import org.terasology.splash.overlay.RectOverlay;
 import org.terasology.splash.overlay.TextOverlay;
+import org.terasology.splash.overlay.TriggerImageOverlay;
 
-public final class SplashScreenTest {
+public class SplashScreenTest {
 
-    /**
-     * Run with JVM argument: -splash:src/test/resources/splash.jpg
-     * @param args (ignored)
-     * @throws InterruptedException
-     * @throws IOException
-     */
-    public static void main(String[] args) throws InterruptedException, IOException {
+    @Test
+    public void testEverything() throws IOException, InterruptedException {
 //        System.setProperty("java.awt.headless", "true");
 
         int imageHeight = 283;
@@ -102,7 +96,7 @@ public final class SplashScreenTest {
         instance.post("HELLO 6");
         instance.post("HELLO 7 7 7 77777777777777777777777777777777777777777777777777");
 
-        Thread.sleep(10000);
+        Thread.sleep(100);
 
         instance.close();
     }
