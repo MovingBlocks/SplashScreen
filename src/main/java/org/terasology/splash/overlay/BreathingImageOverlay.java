@@ -58,9 +58,9 @@ public class BreathingImageOverlay implements Overlay {
      * @param maxSize the maximum relative size of the image
      * @return this
      */
-    public BreathingImageOverlay setAnimationRange(double minSize, double maxSize) {
-        this.minSize = minSize;
-        this.maxSize = maxSize;
+    public BreathingImageOverlay setAnimationRange(double newMinSize, double newMaxSize) {
+        this.minSize = newMinSize;
+        this.maxSize = newMaxSize;
         return this;
     }
 

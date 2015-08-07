@@ -22,7 +22,7 @@ import java.awt.Rectangle;
 
 public class AnimatedBoxRowOverlay implements Overlay {
 
-    private double time = 0;
+    private double time;
     private Rectangle boxRc;
 
     private int boxHeight = 18;

@@ -75,11 +75,9 @@ public final class SplashScreenBuilder {
             if (!EventQueue.isDispatchThread()) {
                 try {
                     SwingUtilities.invokeAndWait(createInstanceTask);
-                }
-                catch (InvocationTargetException e) {
+                } catch (InvocationTargetException e) {
                     e.printStackTrace();
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             } else {

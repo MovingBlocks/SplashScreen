@@ -22,7 +22,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 
 /**
  * An overlay that renders (shadowed) text within a given rectangle.
