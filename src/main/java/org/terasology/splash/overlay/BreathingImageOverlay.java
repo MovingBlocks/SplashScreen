@@ -54,8 +54,8 @@ public class BreathingImageOverlay implements Overlay {
 
     /**
      * A value of 1 indicates normal size. Typical values would be 0.95 and 1.05.
-     * @param minSize the minimum relative size of the image
-     * @param maxSize the maximum relative size of the image
+     * @param newMinSize the minimum relative size of the image
+     * @param newMaxSize the maximum relative size of the image
      * @return this
      */
     public BreathingImageOverlay setAnimationRange(double newMinSize, double newMaxSize) {

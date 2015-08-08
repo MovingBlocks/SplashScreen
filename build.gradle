@@ -61,6 +61,10 @@ artifacts {
     archives javadocJar
 }
 
+javadoc {
+    failOnError = false
+}
+
 checkstyle {
     ignoreFailures = true
     config = resources.text.fromArchiveEntry(configurations.codeMetrics, "checkstyle/checkstyle.xml")
