@@ -13,6 +13,8 @@ apply plugin: 'maven-publish'
 
 group = 'org.terasology'
 
+archivesBaseName = 'splash-screen' // for local jar files
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -101,6 +103,8 @@ publishing {
             
             from components.java
 
+            artifactId 'splash-screen'   // for published jar files
+			
             artifact sourceJar {
                 classifier "sources"
             }
