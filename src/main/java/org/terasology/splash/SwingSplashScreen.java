@@ -61,7 +61,10 @@ final class SwingSplashScreen extends AbstractSplashScreen {
         window.setBackground(new Color(0, 0, 0, 0));
         window.setSize(width, height);
         window.setLocationRelativeTo(null);
-        window.setAlwaysOnTop(true);
+
+        // alwaysOnTop keeps the LWJGL2 Display window from popping up and it can't be triggered manually
+//        window.setAlwaysOnTop(true);
+
         window.add(new Component() {
 
             private static final long serialVersionUID = 1717818903226627606L;

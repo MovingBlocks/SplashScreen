@@ -44,7 +44,7 @@ abstract class AbstractSplashScreen implements SplashScreen {
     /**
      * Minimum time a message is visible (in milli-seconds)
      */
-    private final double visTime = 300;
+    private final double visTime = 100;
     private double lastUpdate;
 
     private final Timer timer;

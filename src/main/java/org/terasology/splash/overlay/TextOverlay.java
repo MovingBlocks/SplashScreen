@@ -28,7 +28,7 @@ import java.awt.Rectangle;
  */
 public class TextOverlay implements Overlay {
 
-    private final Font font = new Font("SansSerif", Font.BOLD, 14);
+    private final Font font = new Font("Serif", Font.BOLD, 14);
     private final String ellipsis = "..";
     private Color textColor = Color.BLACK;
 
