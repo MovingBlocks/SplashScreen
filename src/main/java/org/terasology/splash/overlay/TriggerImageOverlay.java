@@ -16,36 +16,22 @@
 
 package org.terasology.splash.overlay;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-
-import javax.imageio.ImageIO;
 
 /**
  * A static image overlay that can be triggered by a certain message.
  */
-public class TriggerImageOverlay implements Overlay {
+public class TriggerImageOverlay extends ImageOverlay {
 
-    private final BufferedImage img;
-    private int x;
-    private int y;
-    private boolean visible = true;
     private String trigger;
 
     public TriggerImageOverlay(URL imgResource) throws IOException {
-        img = ImageIO.read(imgResource);
-    }
-
-    public TriggerImageOverlay setPosition(int nx, int ny) {
-        this.x = nx;
-        this.y = ny;
-        return this;
+        super(imgResource);
     }
 
     public TriggerImageOverlay setTrigger(String newTrigger) {
-        this.visible = (newTrigger == null);
+        this.setVisible(newTrigger == null);
         this.trigger = newTrigger;
         return this;
     }
@@ -53,14 +39,7 @@ public class TriggerImageOverlay implements Overlay {
     @Override
     public void setMessage(String message) {
         if (trigger != null && trigger.equals(message)) {
-            visible = true;
-        }
-    }
-
-    @Override
-    public void render(Graphics2D g) {
-        if (visible) {
-            g.drawImage(img, x, y, null);
+            setVisible(true);
         }
     }
 }

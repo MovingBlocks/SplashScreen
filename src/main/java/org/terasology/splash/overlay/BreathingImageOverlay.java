@@ -17,34 +17,21 @@
 package org.terasology.splash.overlay;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
+public class BreathingImageOverlay extends ImageOverlay {
 
-public class BreathingImageOverlay implements Overlay {
-
-    private final BufferedImage img;
-    private double centerX;
-    private double centerY;
     private double speed = 1;
     private double time;
     private double minSize = 0.95;
     private double maxSize = 1.05;
 
     public BreathingImageOverlay(URL imgResource) throws IOException {
-        img = ImageIO.read(imgResource);
-        centerX = img.getWidth() * 0.5;
-        centerY = img.getHeight() * 0.5;
-    }
-
-    public BreathingImageOverlay setCenter(double nx, double ny) {
-        this.centerX = nx;
-        this.centerY = ny;
-        return this;
+        super(imgResource);
     }
 
     public BreathingImageOverlay setAnimationSpeed(double newSpeed) {
@@ -72,6 +59,11 @@ public class BreathingImageOverlay implements Overlay {
     @Override
     public void render(Graphics2D g) {
 
+        Rectangle bounds = getBounds();
+
+        double centerX = bounds.getCenterX();
+        double centerY = bounds.getCenterY();
+
         // use a sine wave to animate (use -cos to start at -1)
         double wave = -Math.cos(time * 0.001 * Math.PI * speed);
 
@@ -89,7 +81,7 @@ public class BreathingImageOverlay implements Overlay {
 
         // activate bi-linear filtering
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g.drawImage(img, xform, null);
+        g.drawImage(getImage(), xform, null);
     }
 }
 

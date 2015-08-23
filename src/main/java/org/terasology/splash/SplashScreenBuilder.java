@@ -87,6 +87,13 @@ public final class SplashScreenBuilder {
     }
 
     /**
+     * @return a new stub instance that does nothing
+     */
+    public static SplashScreen createStub() {
+        return new SplashScreenStub();
+    }
+
+    /**
      * Adds an overlay. <code>null</code> values are silently ignored.
      * @param overlay the overlay to add
      * @return this
