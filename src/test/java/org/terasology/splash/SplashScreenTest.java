@@ -78,6 +78,7 @@ public class SplashScreenTest {
                 .add(new RectOverlay(rectRc))
                 .add(new TextOverlay(textRc))
                 .add(new AnimatedBoxRowOverlay(boxRc))
+                .setMaxQueueLength(10)
                 .build();
 
         Thread.sleep(1000);
@@ -96,7 +97,7 @@ public class SplashScreenTest {
         instance.post("HELLO 6");
         instance.post("HELLO 7 7 7 77777777777777777777777777777777777777777777777777");
 
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         instance.close();
     }
