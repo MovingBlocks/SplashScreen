@@ -105,9 +105,6 @@ abstract class AbstractSplashScreen extends ConfigurableSplashScreen {
         }
 
         synchronized (lock) {
-            while (messageQueue.size() >= maxQueueLength) {
-                messageQueue.remove();
-            }
             messageQueue.add(message);
         }
     }
@@ -115,11 +112,6 @@ abstract class AbstractSplashScreen extends ConfigurableSplashScreen {
     @Override
     public void setMaxQueueLength(int maxQueueLength) {
         this.maxQueueLength = maxQueueLength;
-        synchronized (lock) {
-            while (messageQueue.size() > maxQueueLength) {
-                messageQueue.remove();
-            }
-        }
     }
 
     @Override
@@ -143,12 +135,13 @@ abstract class AbstractSplashScreen extends ConfigurableSplashScreen {
     protected boolean update(double dt) {
 
         lastUpdate += dt;
-        // the first isEmpty() check is unsynchronized -> lock only if chances are realistic
+        // the isEmpty() check is unsynchronized -> lock only if chances are realistic
+        // only this method removes entries, so isEmpty() cannot be true later
         if (lastUpdate > minVisTime && !messageQueue.isEmpty()) {
+            lastUpdate = 0;
             synchronized (lock) {
-                if (!messageQueue.isEmpty()) {
+                while (messageQueue.size() > maxQueueLength) {
                     String message = messageQueue.poll();
-                    lastUpdate = 0;
                     for (Overlay overlay : overlays) {
                         overlay.setMessage(message);
                     }
