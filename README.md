@@ -11,7 +11,7 @@ Usage
 You can integrate this library like this: 
 
 ```
-compile(group: 'org.terasology', name: 'splash-screen', version: '1.0.0')
+compile(group: 'org.terasology', name: 'splash-screen', version: '1.0.3')
 ```
 
 This library requires [Java 8](http://java.com/download).
