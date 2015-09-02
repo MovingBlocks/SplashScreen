@@ -19,10 +19,10 @@ package org.terasology.splash;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.Timer;
@@ -34,7 +34,7 @@ import org.terasology.splash.overlay.Overlay;
  * animates through a list of messages.
  */
 
-abstract class AbstractSplashScreen implements SplashScreen {
+abstract class AbstractSplashScreen extends ConfigurableSplashScreen {
 
     /**
      * In milli-seconds
@@ -44,12 +44,16 @@ abstract class AbstractSplashScreen implements SplashScreen {
     /**
      * Minimum time a message is visible (in milli-seconds)
      */
-    private final double visTime = 100;
+    private double minVisTime = 100;
+
+    private int maxQueueLength = 3;
+
     private double lastUpdate;
 
     private final Timer timer;
 
-    private final Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<String> messageQueue = new ArrayDeque<>();
+    private final Object lock = new Object();
 
     private final List<Overlay> overlays = new CopyOnWriteArrayList<>();
 
@@ -96,19 +100,30 @@ abstract class AbstractSplashScreen implements SplashScreen {
 
     @Override
     public void post(String message) {
-        if (message != null) {
+        if (message == null) {
+            return;
+        }
+
+        synchronized (lock) {
             messageQueue.add(message);
         }
+    }
+
+    @Override
+    public void setMaxQueueLength(int maxQueueLength) {
+        this.maxQueueLength = maxQueueLength;
+    }
+
+    @Override
+    public void setMinVisTime(double minVisTime) {
+        this.minVisTime = minVisTime;
     }
 
     public final List<Overlay> getOverlays() {
         return Collections.unmodifiableList(overlays);
     }
 
-    public final String getCurrentMessage() {
-        return messageQueue.peek();
-    }
-
+    @Override
     void addOverlay(Overlay overlay) {
         overlays.add(overlay);
     }
@@ -120,11 +135,17 @@ abstract class AbstractSplashScreen implements SplashScreen {
     protected boolean update(double dt) {
 
         lastUpdate += dt;
-        if (lastUpdate > visTime && !messageQueue.isEmpty()) {
-            String message = messageQueue.poll();
+        // the isEmpty() check is unsynchronized -> lock only if chances are realistic
+        // only this method removes entries, so isEmpty() cannot be true later
+        if (lastUpdate > minVisTime && !messageQueue.isEmpty()) {
             lastUpdate = 0;
-            for (Overlay overlay : overlays) {
-                overlay.setMessage(message);
+            synchronized (lock) {
+                do {
+                    String message = messageQueue.poll();
+                    for (Overlay overlay : overlays) {
+                        overlay.setMessage(message);
+                    }
+                } while (messageQueue.size() > maxQueueLength);
             }
         }
 

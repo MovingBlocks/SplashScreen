@@ -16,14 +16,16 @@
 
 package org.terasology.splash;
 
-public interface SplashScreen {
+import org.terasology.splash.overlay.Overlay;
 
-    /**
-     * Adds a new message in the display queue. <code>null</code> values are silently ignored.
-     * This method is <b>thread-safe</b>.
-     * @param message the message to be queued
-     */
-    void post(String message);
+/**
+ * This is an abstract class, because the methods should be package private only.
+ */
+public abstract class ConfigurableSplashScreen implements SplashScreen {
 
-    void close();
+    abstract void addOverlay(Overlay overlay);
+
+    abstract void setMaxQueueLength(int maxQueueLength);
+
+    abstract void setMinVisTime(double minVisTime);
 }

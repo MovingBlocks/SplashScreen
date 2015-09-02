@@ -27,7 +27,7 @@ import org.terasology.splash.overlay.Overlay;
 
 public final class SplashScreenBuilder {
 
-    private AbstractSplashScreen splashScreen;
+    private ConfigurableSplashScreen splashScreen;
 
     private final URL resourceUrl;
     private final int windowWidth;
@@ -84,6 +84,10 @@ public final class SplashScreenBuilder {
                 createInstanceTask.run();
             }
         }
+
+        if (splashScreen == null) {
+            splashScreen = new SplashScreenStub();
+        }
     }
 
     /**
@@ -100,18 +104,31 @@ public final class SplashScreenBuilder {
      */
     public SplashScreenBuilder add(Overlay overlay) {
         if (overlay != null) {
-            if (splashScreen != null) {
-                splashScreen.addOverlay(overlay);
-            }
+            splashScreen.addOverlay(overlay);
         }
         return this;
     }
 
-    public SplashScreen build() {
-        if (splashScreen != null) {
-            return splashScreen;
-        }
+    /**
+     * Sets the maximum length of the message queue. As soon as the length is reached,
+     * the oldest messaged are dropped without being displayed. The default length is three.
+     * @param maxQueueLength the new maximum length
+     */
+    public SplashScreenBuilder setMaxQueueLength(int maxQueueLength) {
+        splashScreen.setMaxQueueLength(maxQueueLength);
+        return this;
+    }
 
-        return new SplashScreenStub();
+    /**
+     * Set the minimum time a message is visible. The default length is 100 milliseconds.
+     * @param minVisTime the time in milli-seconds
+     */
+    public SplashScreenBuilder setMinVisTime(double minVisTime) {
+        splashScreen.setMinVisTime(minVisTime);
+        return this;
+    }
+
+    public SplashScreen build() {
+        return splashScreen;
     }
 }

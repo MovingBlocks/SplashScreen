@@ -16,10 +16,12 @@
 
 package org.terasology.splash;
 
+import org.terasology.splash.overlay.Overlay;
+
 /**
  * A dummy implementation that does nothing
  */
-class SplashScreenStub implements SplashScreen {
+class SplashScreenStub extends ConfigurableSplashScreen {
 
     @Override
     public void post(String message) {
@@ -28,6 +30,21 @@ class SplashScreenStub implements SplashScreen {
 
     @Override
     public void close() {
+        // do nothing
+    }
+
+    @Override
+    void addOverlay(Overlay overlay) {
+        // do nothing
+    }
+
+    @Override
+    void setMaxQueueLength(int maxQueueLength) {
+        // do nothing
+    }
+
+    @Override
+    void setMinVisTime(double minVisTime) {
         // do nothing
     }
 }
