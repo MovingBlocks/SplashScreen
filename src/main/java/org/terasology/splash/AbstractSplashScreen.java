@@ -140,12 +140,12 @@ abstract class AbstractSplashScreen extends ConfigurableSplashScreen {
         if (lastUpdate > minVisTime && !messageQueue.isEmpty()) {
             lastUpdate = 0;
             synchronized (lock) {
-                while (messageQueue.size() > maxQueueLength) {
+                do {
                     String message = messageQueue.poll();
                     for (Overlay overlay : overlays) {
                         overlay.setMessage(message);
                     }
-                }
+                } while (messageQueue.size() > maxQueueLength);
             }
         }
 
