@@ -16,7 +16,7 @@ apply plugin: 'idea'
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
 apply plugin: 'com.github.spotbugs'
-//apply plugin: 'maven-publish'
+apply plugin: 'maven-publish'
 
 group = 'org.terasology'
 
@@ -98,29 +98,61 @@ spotbugs {
     excludeFilter = new File(rootDir, "config/metrics/findbugs/findbugs-exclude.xml")
 }
 
-//publishing {
-//    publications {
-//        mavenJava(MavenPublication) {
-//            
-//            from components.java
-//
-//            artifactId 'splash-screen'   // for published jar files
-//			
-//            artifact sourceJar {
-//                classifier "sources"
-//            }
-//            artifact javadocJar {
-//                classifier "javadoc"
-//            }
-//        }
-//    }
-//}
+publishing {
+    publications {
+        "$project.name"(MavenPublication) {
+            // Without this we get a .pom with no dependencies
+            from components.java
 
-//artifactory {
-//    publish {
-//        defaults {
-//            publications('mavenJava')
-//        }
-//    }
-//}
+            artifact source: sourceJar, classifier: 'sources'
+            artifact source: javadocJar, classifier: 'javadoc'
+
+            repositories {
+                maven {
+                    name = 'TerasologyOrg'
+
+                    if (rootProject.hasProperty("publishRepo")) {
+                        // This first option is good for local testing, you can set a full explicit target repo in gradle.properties
+                        url = "http://artifactory.terasology.org/artifactory/$publishRepo"
+                        allowInsecureProtocol true // 😱
+                        logger.info("Changing PUBLISH repoKey set via Gradle property to {}", publishRepo)
+                    } else {
+                        // Support override from the environment to use a different target publish org
+                        String deducedPublishRepo = System.getenv()["PUBLISH_ORG"]
+                        if (deducedPublishRepo == null || deducedPublishRepo == "") {
+                            // If not then default
+                            deducedPublishRepo = "terasology"
+                        }
+
+                        // Check the active Git branch and some module logic to see whether we're doing a release or snapshot
+                        String gitBranch = System.getenv()["BRANCH_NAME"]
+                        if (isMaster(gitBranch) && !shouldBypassModuleRelease()) {
+                            deducedPublishRepo += "-release-local"
+                        } else {
+                            deducedPublishRepo += "-snapshot-local"
+                        }
+
+                        logger.info("The final deduced publish repo is {}", deducedPublishRepo)
+                        url = "http://artifactory.terasology.org/artifactory/$deducedPublishRepo"
+                        allowInsecureProtocol true
+                    }
+
+                    if (rootProject.hasProperty("mavenUser") && rootProject.hasProperty("mavenPass")) {
+                        credentials {
+                            username = "$mavenUser"
+                            password = "$mavenPass"
+                        }
+                        authentication {
+                            basic(BasicAuthentication)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+static def isMaster(gitBranch) {
+    return gitBranch != null && gitBranch.equals("master");
+}
 
