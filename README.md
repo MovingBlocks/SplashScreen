@@ -11,12 +11,12 @@ Usage
 You can integrate this library like this: 
 
 ```
-compile(group: 'org.terasology', name: 'splash-screen', version: '1.0.3')
+compile(group: 'org.terasology', name: 'splash-screen', version: '1.1.0')
 ```
 
 This library requires [Java 8](http://java.com/download).
 
-License
--------------
+## License & Attribution
+-----------
 
-This software is licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
+This project is based on [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html), with modifications by The Terasology Foundation, with the combined work still licensed under the [MIT License](https://opensource.org/licenses/MIT)
