@@ -52,7 +52,7 @@ configurations {
 
 dependencies {
 
-    codeMetrics(group: 'org.terasology.config', name: 'codemetrics', version: '1.3.2', ext: 'zip')
+    codeMetrics(group: 'org.terasology.config', name: 'codemetrics', version: '1.5.0', ext: 'zip')
 
     // GLFW splash screen
     implementation platform("org.lwjgl:lwjgl-bom:3.2.3")
@@ -64,7 +64,7 @@ dependencies {
 
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 
-//    testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.3'
+    //testRuntime group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.3'
 }
 
 task sourceJar(type: Jar) {
@@ -145,12 +145,11 @@ publishing {
                             deducedPublishRepo = "terasology"
                         }
 
-                        // Check the active Git branch and some module logic to see whether we're doing a release or snapshot
-                        String gitBranch = System.getenv()["BRANCH_NAME"]
-                        if (isMaster(gitBranch) && !shouldBypassModuleRelease()) {
-                            deducedPublishRepo += "-release-local"
-                        } else {
+                        // Base final publish repo on whether we're building a snapshot or a release
+                        if (project.version.endsWith('SNAPSHOT')) {
                             deducedPublishRepo += "-snapshot-local"
+                        } else {
+                            deducedPublishRepo += "-release-local"
                         }
 
                         logger.info("The final deduced publish repo is {}", deducedPublishRepo)
@@ -172,8 +171,3 @@ publishing {
         }
     }
 }
-
-static def isMaster(gitBranch) {
-    return gitBranch != null && gitBranch.equals("master");
-}
-

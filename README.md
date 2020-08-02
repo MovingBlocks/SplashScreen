@@ -19,4 +19,5 @@ This library requires [Java 8](http://java.com/download).
 ## License & Attribution
 -----------
 
-This project is based on [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html), with modifications by The Terasology Foundation, with the combined work still licensed under the [MIT License](https://opensource.org/licenses/MIT)
+* [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html) for the main work provided by The Terasology Foundation
+* [MIT License](https://opensource.org/licenses/MIT) for the embedded work by Heiko Brumme originally from [lwjgl3-tutorial on GitHub](https://github.com/SilverTiger/lwjgl3-tutorial) with additional modifications by The Terasology Foundation
