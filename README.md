@@ -8,7 +8,7 @@ Usage
 
 [![Build Status](http://jenkins.terasology.org/job/SplashScreen/badge/icon)](http://jenkins.terasology.org/job/SplashScreen/)
 
-You can integrate this library like this: 
+You can integrate this library like this using Gradle: 
 
 ```
 compile(group: 'org.terasology', name: 'splash-screen', version: '1.1.0')

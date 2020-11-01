@@ -10,6 +10,4 @@ public interface Widget {
 
     default void update(double dt) {
     }
-
-    ;
 }

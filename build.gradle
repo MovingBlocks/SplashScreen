@@ -52,7 +52,7 @@ configurations {
 
 dependencies {
 
-    codeMetrics(group: 'org.terasology.config', name: 'codemetrics', version: '1.5.0', ext: 'zip')
+    codeMetrics(group: 'org.terasology.config', name: 'codemetrics', version: '1.4.0', ext: 'zip')
 
     // GLFW splash screen
     implementation platform("org.lwjgl:lwjgl-bom:3.2.3")

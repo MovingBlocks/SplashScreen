@@ -2,11 +2,12 @@
 /.gradle
 /build
 
-# Eclipse project files
+# IDE project files
 .classpath
 .project
 .settings/
 /bin
+.idea
 
 # CheckStyle
 .checkstyle
