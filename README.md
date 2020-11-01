@@ -11,7 +11,7 @@ Usage
 You can integrate this library like this using Gradle: 
 
 ```
-compile(group: 'org.terasology', name: 'splash-screen', version: '1.1.0')
+compile(group: 'org.terasology', name: 'splash-screen', version: '1.1.1')
 ```
 
 This library requires [Java 8](http://java.com/download).
