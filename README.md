@@ -6,8 +6,6 @@ A library that provides splash screen implementations.
 Usage
 -----------
 
-[![Build Status](http://jenkins.terasology.org/job/SplashScreen/badge/icon)](http://jenkins.terasology.org/job/SplashScreen/)
-
 You can integrate this library like this using Gradle: 
 
 ```
