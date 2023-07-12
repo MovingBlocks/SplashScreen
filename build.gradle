@@ -127,8 +127,8 @@ publishing {
             // Without this we get a .pom with no dependencies
             from components.java
 
-            artifact source: sourceJar, archiveClassifier: 'sources'
-            artifact source: javadocJar, archiveClassifier: 'javadoc'
+            artifact source: sourceJar, classifier: 'sources'
+            artifact source: javadocJar, classifier: 'javadoc'
 
             repositories {
                 maven {
