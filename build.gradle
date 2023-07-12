@@ -72,13 +72,13 @@ dependencies {
 task sourceJar(type: Jar) {
     description = "Create a JAR with all sources"
     from sourceSets.main.allSource
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     description = "Create a JAR with the JavaDoc for the java sources"
     from javadoc.destinationDir
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 
 // Define the artifacts we want to publish (the .pom will also be included since the Maven plugin is active)
@@ -127,8 +127,8 @@ publishing {
             // Without this we get a .pom with no dependencies
             from components.java
 
-            artifact source: sourceJar, classifier: 'sources'
-            artifact source: javadocJar, classifier: 'javadoc'
+            artifact source: sourceJar, archiveClassifier: 'sources'
+            artifact source: javadocJar, archiveClassifier: 'javadoc'
 
             repositories {
                 maven {
